@@ -18,10 +18,7 @@ public class AwsCdkstackStack extends Stack {
 
         // 履歴書のソースリポジトリの作成
         final Repository resumeSourceRepo =
-                Repository.Builder.create(this, "cv-repo").repositoryName("cv-repo").description("履歴書のソースレポジトリ").build();
-        // 職務経歴書のソースリポジトリの作成
-        final Repository careerHistorySourceRepo =
-                Repository.Builder.create(this, "career-history-repo").repositoryName("resume-repo").description("職務経歴書のソースレポジトリ").build();
+                Repository.Builder.create(this, "cv-repo").repositoryName("resume-cv-repo").description("職務経歴書・履歴書のソースレポジトリ").build();
 
         // ビルド成果物の格納先を作成
         final Bucket bucket = Bucket.Builder.create(this, "resume-storage")
