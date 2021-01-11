@@ -3,6 +3,10 @@ package com.myorg;
 import software.amazon.awscdk.core.Construct;
 import software.amazon.awscdk.core.Stack;
 import software.amazon.awscdk.core.StackProps;
+import software.amazon.awscdk.services.codecommit.Repository;
+import software.amazon.awscdk.services.s3.BlockPublicAccess;
+import software.amazon.awscdk.services.s3.Bucket;
+import software.amazon.awscdk.services.s3.BucketEncryption;
 
 public class AwsCdkstackStack extends Stack {
     public AwsCdkstackStack(final Construct scope, final String id) {
@@ -12,6 +16,19 @@ public class AwsCdkstackStack extends Stack {
     public AwsCdkstackStack(final Construct scope, final String id, final StackProps props) {
         super(scope, id, props);
 
-        // The code that defines your stack goes here
+        // 履歴書のソースリポジトリの作成
+        final Repository resumeSourceRepo =
+                Repository.Builder.create(this, "cv-repo").repositoryName("cv-repo").description("履歴書のソースレポジトリ").build();
+        // 職務経歴書のソースリポジトリの作成
+        final Repository careerHistorySourceRepo =
+                Repository.Builder.create(this, "career-history-repo").repositoryName("career-history-repo").description("職務経歴書のソースレポジトリ").build();
+
+        // ビルド成果物の格納先を作成
+        final Bucket bucket = Bucket.Builder.create(this, "resume-storage")
+                .bucketName("my-resume-document-storage")
+                .blockPublicAccess(BlockPublicAccess.BLOCK_ALL)
+                .versioned(true)
+                .encryption(BucketEncryption.S3_MANAGED)
+                .build();
     }
 }
